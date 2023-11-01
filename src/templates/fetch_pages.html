@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML Page and Image Loader</title>
+</head>
+<body>
+    <h1>Load NVD-CVE analysis data</h1>
+    <!-- Page Description -->
+    <p>1. This page is for displaying stats of pre-calculated nvd-cve analysis for critical infrastructure (Power Grid System)
+        elements such as Human Machine Interface(HMI), Remote Transmission Unit (RTU) circuits, Power link controller (PLC)
+        and Main Transmission Unit (MTU).</p>
+
+    <p>2.The requests are task based created. Such as:</p>
+    <p>Task 3.1: The output chart displays total vulnerabilities reported per year. Range must be within 2002-2023.
+        URL: https://host:port/v1/nvd_view?task=3.1&range=yyyy-yyyy</p>
+    <p>Task 3.2: The output chart displays total vulnerabilities reported per year for critical infrastructure components
+        . URL: https://host:port/v1/nvd_view?task=3.2</p>
+    <p>Task 3.2: The output chart displays cvss score for reported vulnerabilities for critical infrastructure components
+        . URL: https://host:port/v1/nvd_view?task=3.2.cvss</p>
+    <p>Task 4.1: The output chart visualize graphically in a chart the number of vulnerability report instances
+        corresponding to each of these threats. URL: https://host:port/v1/nvd_view?task=4.1</p>
+    <p>Task 4.2: The output chart visualize graphically correlation of vulnerability report instances
+        corresponding to each of these threats. URL: https://host:port/v1/nvd_view?task=4.2</p>
+    <p>Task 4.3: The output chart visualize graphically correlation and frequency of vulnerability report instances
+        corresponding to each of these threats. URL: https://host:port/v1/nvd_view?task=4.3</p>
+
+    <!-- Input for HTML Page or Image URL -->
+    <input type="text" id="contentUrl" size="50" placeholder="Enter URL for HTML or Image">
+
+    <!-- Button to Load Content -->
+    <button id="loadContent">Load Content</button>
+    <div id="progressReport"></div>
+    <!-- Container for Displaying HTML Page or Image -->
+    <div id="contentContainer">
+        <iframe id="pageIframe" width="100%" height="500" frameborder="0"></iframe>
+        <img id="image" style="max-width: 100%; max-height: 500px;" alt="Image">
+    </div>
+
+    <script>
+        // Function to load HTML page or image into the iframe or image element
+        function loadContent() {
+            const url = document.getElementById("contentUrl").value;
+            const contentContainer = document.getElementById("contentContainer");
+            const pageIframe = document.getElementById("pageIframe");
+            const image = document.getElementById("image");
+            const progressReport = document.getElementById("progressReport");
+
+            // Display a loading message while content is being loaded
+            progressReport.innerText = "Loading...";
+            // Check if the <iframe> content contains the login page
+            var isLoginPage = pageIframe.title.toLowerCase().includes('login');
+            if (isLoginPage) {
+            location.reload(); // Reload the parent page
+            }
+            // Check if the URL ends with common image extensions
+            if (/\.(jpeg|jpg|gif|png|bmp|webp|svg|ico)$/i.test(url)) {
+                // Display the image
+                pageIframe.style.display = "none";
+                image.style.display = "block";
+                // Handle image loading progress
+                image.onload = function () {
+                    progressReport.innerText = "Image loaded successfully!";
+                };
+                image.onerror = function () {
+                   progressReport.innerText = "Failed to load the image.";
+                };
+                image.src = url;
+            } else {
+                // Display HTML content in the iframe
+                image.style.display = "none";
+                pageIframe.style.display = "block";
+                // Handle iframe loading progress
+                pageIframe.onload = function () {
+                   progressReport.innerText = "Page loaded successfully!";
+                };
+                pageIframe.onerror = function () {
+                   progressReport.innerText = "Failed to load the page.";
+                };
+                pageIframe.src = url;
+            }
+        }
+
+        // Add a click event handler to the Load Content button
+        document.getElementById("loadContent").addEventListener("click", loadContent);
+    </script>
+</body>
+</html>
