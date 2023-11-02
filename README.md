@@ -33,17 +33,32 @@ appropriate security measures.
 Request as input
 -------
 The requests are task based created. Such as:
+
 Task 3.1: The output chart displays total vulnerabilities reported per year. Range must be within 2002-2023.
 URL: https://host:port/v1/nvd_view?task=3.1&range=yyyy-yyyy
+
 Task 3.2: The output chart displays total vulnerabilities reported per year for critical infrastructure components
 .URL: https://host:port/v1/nvd_view?task=3.2
+
 Task 3.2: The output chart displays cvss score for reported vulnerabilities for critical infrastructure components
 .URL: https://host:port/v1/nvd_view?task=3.2.cvss
+
 Task 4.1: The output chart visualize graphically in a chart the number of vulnerability report instances
 corresponding to each of these threats. URL: https://host:port/v1/nvd_view?task=4.1
+
 Task 4.2: The output chart visualize graphically correlation of vulnerability report instances
 corresponding to each of these threats. URL: https://host:port/v1/nvd_view?task=4.2
+
 Task 4.3: The output chart visualize graphically correlation and frequency of vulnerability report instances
 corresponding to each of these threats. URL: https://host:port/v1/nvd_view?task=4.3
+
+Access over web browser
+-------
+The service will be created after deployment with type NodePort.
+Use port-forward command to expose internal port to outside which will enable the access to web browser.
+For example:
+kubectl port-forward pod/nvd-view-<id numbers> -n <namespace: for example nvd-analysis> 8082:8082
+
+Now, service can be accessed over browser with url https://localhost:8082/v1/nvd_view
 
     
